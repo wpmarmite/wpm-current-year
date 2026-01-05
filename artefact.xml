@@ -1,0 +1,409 @@
+<?xml version="1.0"?><artefact xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="artefact.xsd" name="Current Year" slug="current-year" type="code-package" schemaVersion="2">
+  <file path="readme.txt">
+    <description>This file contains the readme information for the block. It is used to provide information about the block, its usage, and any other relevant details.</description>
+    <content><![CDATA[=== Current Year ===
+
+Contributors:      WordPress Telex
+Tags:              block, year, date, copyright, dynamic, shortcode
+Tested up to:      6.8
+Stable tag:        0.1.0
+License:           GPLv2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+
+A dynamic block that automatically displays the current year with customizable formatting.
+
+== Description ==
+
+The Current Year block is a lightweight, dynamic solution for displaying the current year on your WordPress site. Perfect for copyright notices, footer information, or any content that needs to reference the current year.
+
+**Key Features:**
+
+* Automatically updates to display the current year
+* Customizable text formatting (font size, color, alignment)
+* Optional prefix and suffix text (e.g., "Copyright © 2024")
+* Inline display - works seamlessly within paragraphs and headings
+* Lightweight and performant - updates on each page load
+* No manual intervention required
+* **[current-year] shortcode for classic themes and widgets**
+
+**Use Cases:**
+
+* Copyright notices: "Copyright © 2024 Your Company"
+* Footer information: "Est. 2010 - 2024"
+* Dynamic content: "Welcome to 2024"
+* Legal disclaimers with current year references
+
+The block provides a simple interface in the editor with live preview and comprehensive formatting controls through the WordPress block toolbar and inspector panel.
+
+**Shortcode Usage:**
+
+For classic themes or anywhere shortcodes are supported, use:
+
+* `[current-year]` - Displays just the year: 2024
+* `[current-year prefix="Copyright © "]` - Displays: Copyright © 2024
+* `[current-year prefix="Est. 2010 - "]` - Displays: Est. 2010 - 2024
+* `[current-year prefix="©" suffix=" All rights reserved"]` - Displays: ©2024 All rights reserved
+
+== Installation ==
+
+1. Upload the plugin files to the `/wp-content/plugins/current-year` directory, or install the plugin through the WordPress plugins screen directly.
+2. Activate the plugin through the 'Plugins' screen in WordPress
+3. Add the Current Year block to any post or page using the block inserter, or use the [current-year] shortcode
+4. Customize the formatting and prefix/suffix text as needed
+
+== Frequently Asked Questions ==
+
+= Does the year update automatically? =
+
+Yes! The year is generated dynamically on each page load using PHP, so it will always display the current year without any manual updates.
+
+= Can I add text before or after the year? =
+
+Absolutely. In the block editor, use the Prefix and Suffix fields in the block settings panel. With the shortcode, use the prefix and suffix attributes: `[current-year prefix="Copyright © " suffix=" Company Name"]`
+
+= Can I use this in classic themes? =
+
+Yes! Use the `[current-year]` shortcode anywhere shortcodes are supported, including classic theme templates, widgets, and the Classic Editor.
+
+= Can I customize the appearance? =
+
+Yes, the block supports standard WordPress text formatting including font size, text color, background color, and text alignment through the block toolbar and inspector controls. For the shortcode, you can wrap it in HTML with custom CSS classes.
+
+= Will this work inline with other text? =
+
+Yes! The block is designed to work inline within paragraphs, headings, or any other content. It renders as a span element that flows naturally with surrounding text. The shortcode also works inline.
+
+= Does it affect site performance? =
+
+No, the block is extremely lightweight. It simply outputs the current year using PHP's date function, which has negligible performance impact.
+
+== Screenshots ==
+
+1. Current Year block in the editor with formatting options
+2. Block settings panel showing prefix and suffix options
+3. Example of the block used in a copyright notice
+4. Shortcode usage examples
+
+== Changelog ==
+
+= 0.1.0 =
+* Initial release
+* Dynamic year display
+* Customizable prefix and suffix
+* Text formatting controls
+* Inline display support
+* [current-year] shortcode for classic themes
+
+== Usage Examples ==
+
+**Block Usage:**
+Add the Current Year block through the block inserter and customize in the settings panel.
+
+**Shortcode Usage:**
+
+* Simple year: `[current-year]` → 2024
+* Copyright: `[current-year prefix="Copyright © "]` → Copyright © 2024
+* Date range: `[current-year prefix="Est. 2010 - "]` → Est. 2010 - 2024
+* Full notice: `[current-year prefix="© " suffix=" Company Name. All rights reserved."]` → © 2024 Company Name. All rights reserved.]]></content>
+  </file>
+  <file path="current-year.php">
+    <description>This file contains the block registration code in the form of a single block plugin. Any other plugin related functionality should be added to this file. All block rendering functionality should go to the `render.php` file.</description>
+    <content><![CDATA[<?php
+/**
+ * Plugin Name:       Current Year
+ * Description:       A dynamic block that automatically displays the current year with customizable formatting.
+ * Version:           0.1.0
+ * Requires at least: 6.1
+ * Requires PHP:      7.4
+ * Author:            WordPress Telex
+ * License:           GPLv2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       current-year
+ *
+ * @package CurrentYear
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+/**
+ * Registers the block using the metadata loaded from the `block.json` file.
+ * Behind the scenes, it registers also all assets so they can be enqueued
+ * through the block editor in the corresponding context.
+ *
+ * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ */
+function current_year_block_init() {
+	register_block_type( __DIR__ . '/build/' );
+}
+add_action( 'init', 'current_year_block_init' );
+
+/**
+ * Registers the [current-year] shortcode.
+ *
+ * @param array $atts Shortcode attributes.
+ * @return string The current year with optional prefix and suffix.
+ */
+if ( ! function_exists( 'current_year_shortcode' ) ) {
+	function current_year_shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'prefix' => '',
+				'suffix' => '',
+			),
+			$atts,
+			'current-year'
+		);
+
+		$current_year = date( 'Y' );
+		
+		return esc_html( $atts['prefix'] ) . esc_html( $current_year ) . esc_html( $atts['suffix'] );
+	}
+}
+add_shortcode( 'current-year', 'current_year_shortcode' );]]></content>
+  </file>
+  <file path="src/block.json">
+    <description>This file contains metadata about the block including its name, title, category, icon, and other properties.</description>
+    <content><![CDATA[
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "telex/current-year",
+	"version": "0.1.0",
+	"title": "Current Year",
+	"category": "text",
+	"icon": "calendar-alt",
+	"description": "Display the current year dynamically with customizable formatting.",
+	"example": {
+		"attributes": {
+			"prefix": "Copyright © ",
+			"suffix": ""
+		}
+	},
+	"attributes": {
+		"prefix": {
+			"type": "string",
+			"default": ""
+		},
+		"suffix": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"align": true,
+		"alignWide": false
+	},
+	"textdomain": "current-year",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}
+]]></content>
+  </file>
+  <file path="src/index.js">
+    <description>This file registers the block, specifies the edit and save functions, and loads the block's metadata</description>
+    <content><![CDATA[
+/**
+ * Registers a new block provided a unique name and an object defining its behavior.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
+ */
+import { registerBlockType } from '@wordpress/blocks';
+
+/**
+ * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
+ * All files containing `style` keyword are bundled together. The code used
+ * gets applied both to the front of your site and to the editor.
+ *
+ * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
+ */
+import './style.scss';
+
+/**
+ * Internal dependencies
+ */
+import Edit from './edit';
+import metadata from './block.json';
+
+/**
+ * Every block starts by registering a new block type definition.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
+ */
+registerBlockType( metadata.name, {
+	/**
+	 * @see ./edit.js
+	 */
+	edit: Edit,
+} );
+]]></content>
+  </file>
+  <file path="src/edit.js">
+    <description>This file contains the edit function for the block which is responsible for rendering the block in the editor.</description>
+    <content><![CDATA[
+/**
+ * Retrieves the translation of text.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
+ * React hook that is used to mark the block wrapper element.
+ * It provides all the necessary props like the class name.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
+ */
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+
+/**
+ * WordPress dependencies
+ */
+import { PanelBody, TextControl } from '@wordpress/components';
+
+/**
+ * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
+ * Those files can contain any CSS code that gets applied to the editor.
+ *
+ * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
+ */
+import './editor.scss';
+
+/**
+ * The edit function describes the structure of your block in the context of the
+ * editor. This represents what the editor will render when the block is used.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
+ *
+ * @param {Object}   props               Properties passed to the function.
+ * @param {Object}   props.attributes    Available block attributes.
+ * @param {Function} props.setAttributes Function that updates individual attributes.
+ *
+ * @return {Element} Element to render.
+ */
+export default function Edit( { attributes, setAttributes } ) {
+	const { prefix, suffix } = attributes;
+	const currentYear = new Date().getFullYear();
+
+	const blockProps = useBlockProps( {
+		className: 'wp-block-telex-current-year',
+	} );
+
+	return (
+		<>
+			<InspectorControls>
+				<PanelBody
+					title={ __( 'Year Settings', 'current-year' ) }
+					initialOpen={ true }
+				>
+					<TextControl
+						label={ __( 'Prefix Text', 'current-year' ) }
+						value={ prefix }
+						onChange={ ( value ) =>
+							setAttributes( { prefix: value } )
+						}
+						help={ __(
+							'Text to display before the year (e.g., "Copyright © ")',
+							'current-year'
+						) }
+					/>
+					<TextControl
+						label={ __( 'Suffix Text', 'current-year' ) }
+						value={ suffix }
+						onChange={ ( value ) =>
+							setAttributes( { suffix: value } )
+						}
+						help={ __(
+							'Text to display after the year',
+							'current-year'
+						) }
+					/>
+				</PanelBody>
+			</InspectorControls>
+			<span { ...blockProps }>
+				{ prefix }
+				{ currentYear }
+				{ suffix }
+			</span>
+		</>
+	);
+}
+]]></content>
+  </file>
+  <file path="src/save.js">
+    <description>This file contains the save function for the block which is responsible for creating the static result of rendering the block on the client to display the saved result on the front end.</description>
+    <content><![CDATA[
+]]></content>
+  </file>
+  <file path="src/style.scss">
+    <description>This file contains styles for the block in the front end.</description>
+    <content><![CDATA[
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-telex-current-year {
+	display: inline;
+}
+]]></content>
+  </file>
+  <file path="src/editor.scss">
+    <description>This file contains styles for the block in the editor.</description>
+    <content><![CDATA[
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-telex-current-year {
+	display: inline;
+}
+]]></content>
+  </file>
+  <file path="src/view.js">
+    <description>This file contains the view function for the block which is responsible for rendering interactive behaviors of the block on the front end.</description>
+    <content><![CDATA[
+/**
+ * This block is fully server-rendered and requires no client-side JavaScript.
+ * The year is generated dynamically via PHP in render.php.
+ */
+]]></content>
+  </file>
+  <file path="src/render.php">
+    <description>This file contains the render callback function for the block, which is responsible for rendering the block content on the front end.</description>
+    <content><![CDATA[<?php
+/**
+ * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
+ */
+
+$prefix = isset( $attributes['prefix'] ) ? $attributes['prefix'] : '';
+$suffix = isset( $attributes['suffix'] ) ? $attributes['suffix'] : '';
+$current_year = date( 'Y' );
+?>
+<span <?php echo get_block_wrapper_attributes(); ?>>
+	<?php 
+	echo esc_html( $prefix ) . esc_html( $current_year ) . esc_html( $suffix ); 
+	?>
+</span>]]></content>
+  </file>
+</artefact>

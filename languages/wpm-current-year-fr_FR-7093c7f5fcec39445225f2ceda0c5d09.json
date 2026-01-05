@@ -1,0 +1,27 @@
+{
+  "domain": "wpm-current-year",
+  "locale_data": {
+    "wpm-current-year": {
+      "": {
+        "domain": "wpm-current-year",
+        "lang": "fr_FR",
+        "plural-forms": "nplurals=2; plural=(n > 1);"
+      },
+      "Year Settings": [
+        "Paramètres de l'année"
+      ],
+      "Prefix Text": [
+        "Texte de préfixe"
+      ],
+      "Text to display before the year (e.g., \"Copyright © \")": [
+        "Texte à afficher avant l'année (par ex. \"Copyright © \")"
+      ],
+      "Suffix Text": [
+        "Texte de suffixe"
+      ],
+      "Text to display after the year": [
+        "Texte à afficher après l'année"
+      ]
+    }
+  }
+}

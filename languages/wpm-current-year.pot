@@ -1,0 +1,55 @@
+# Copyright (C) 2026 WordPress Telex
+# This file is distributed under the same license as the WPM Current Year plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: WPM Current Year 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wpm-current-year\n"
+"POT-Creation-Date: 2026-01-05 00:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#. Plugin Name of the plugin
+msgid "Current Year"
+msgstr ""
+
+#. Description of the plugin
+msgid "A dynamic block that automatically displays the current year with customizable formatting."
+msgstr ""
+
+#. Author of the plugin
+msgid "WPMarmite Start"
+msgstr ""
+
+#: src/block.json
+msgctxt "block title"
+msgid "Current Year"
+msgstr ""
+
+#: src/block.json
+msgctxt "block description"
+msgid "Display the current year dynamically with customizable formatting."
+msgstr ""
+
+#: src/edit.js:54
+msgid "Year Settings"
+msgstr ""
+
+#: src/edit.js:58
+msgid "Prefix Text"
+msgstr ""
+
+#: src/edit.js:63
+msgid "Text to display before the year (e.g., \"Copyright © \")"
+msgstr ""
+
+#: src/edit.js:69
+msgid "Suffix Text"
+msgstr ""
+
+#: src/edit.js:74
+msgid "Text to display after the year"
+msgstr ""
